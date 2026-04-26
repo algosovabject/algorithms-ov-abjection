@@ -1,6 +1,6 @@
 Algorithms ov Abjection
 
-+ Where machines go to die +
+Where machines go to die
 
 .:A:A:.
 
