@@ -1,0 +1,7 @@
+main                stable releases
+feature/error-liturgies
+feature/venereal-cosmology
+feature/machine-liturgy
+
+
+git checkout -b feature/negative-eucharist

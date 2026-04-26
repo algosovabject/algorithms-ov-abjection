@@ -1,0 +1,57 @@
+algorithms-ov-abjection/
+│
+├── README.md
+├── LICENSE
+├── .gitignore
+├── requirements.txt
+├── environment.yml          # optional if conda
+│
+├── docs/                    # concepts, notes, manifestos
+│   ├── aesthetics/
+│   │   ├── digital-cruelty.md
+│   │   ├── industrial-notes.md
+│   │   └── references.md
+│   │
+│   ├── lore/
+│   │   ├── glatisant.md
+│   │   ├── halo-ov-teeth.md
+│   │   └── ripper-personnel.md
+│   │
+│   └── sketches/
+│
+├── field_recordings/
+│   ├── raw/
+│   ├── processed/
+│   └── source_notes/
+│
+├── generators/              # python sound engines
+│   ├── error_liturgies/
+│   ├── glatisant_engine/
+│   ├── segmentation_faults/
+│   └── machine_liturgies/
+│
+├── modular/                 # VCV Rack patches
+│   ├── experiments/
+│   └── release_patches/
+│
+├── releases/
+│   ├── coffin_birth/
+│   │   ├── stems/
+│   │   ├── mixes/
+│   │   ├── cover_art/
+│   │   └── notes.md
+│   │
+│   ├── venereal_cosmology/
+│   └── mangle_arrange/
+│
+├── visuals/
+│   ├── thumbnails/
+│   ├── projections/
+│   └── generative_video/
+│
+├── code_experiments/
+│   ├── impractical_mutations/
+│   └── abandoned_beasts/
+│
+└── archive/
+    └── failures/

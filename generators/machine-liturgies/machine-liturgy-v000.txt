@@ -1,0 +1,25 @@
+import numpy as np
+import soundfile as sf
+
+sr = 44100
+duration = 30
+
+t = np.linspace(0,duration,sr*duration)
+
+# Base drone
+drone = np.sin(2*np.pi*55*t)
+
+# Distortion layer
+drone += .5*np.sin(2*np.pi*57*t)
+
+# Random fault bursts
+for _ in range(40):
+    start=np.random.randint(0,len(drone)-4000)
+    drone[start:start+4000]+=np.random.uniform(-1,1,4000)
+
+# crude clipping distortion
+drone=np.tanh(drone*4)
+
+sf.write("error_liturgy.wav",drone,sr)
+
+print("THE MACHINE ACCEPTS THE OFFERING")
