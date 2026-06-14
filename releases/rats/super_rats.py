@@ -2,6 +2,8 @@ import time
 import random
 import statistics
 
+random.seed(2012)
+
 # CONSTANTS (weights in grams)
 GOAL = 50000
 NUM_RATS = 20
@@ -84,6 +86,7 @@ def main():
         parents = selected_males + selected_females + children
         popl_fitness = fitness(parents, GOAL)
         print("Generation {} fitness = {:.4f}".format(generations, popl_fitness))
+        time.sleep(1.3)
         
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
@@ -92,8 +95,8 @@ def main():
     print("number of years = {}" .format(int(generations / LITTERS_PER_YEAR)))
 
 if __name__ == '__main__':
-    start_time = time.time()
-    main()
-    end_time = time.time()
-    duration = end_time - start_time
-    print("\nRuntime for this program was {} seconds.".format(duration))
+   start_time = time.time()
+   main()
+   end_time = time.time()
+   duration = end_time - start_time
+#    print("\nRuntime for this program was {} seconds.".format(duration))

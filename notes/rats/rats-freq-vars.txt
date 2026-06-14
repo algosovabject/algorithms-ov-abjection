@@ -1,0 +1,35 @@
+# System chooses freq
+freq = some_process()
+sine_wave(freq, 5)
+
+Data sources:
+generations
+population_fitness
+average_weight
+number_of_mutations
+selected_males
+selected_females
+
+Examples:
+freq = average_weight / 10
+freq = population_fitness * 10000
+freq = generations * 5
+
+Math to transform:
+sq root: freq = average_weight ** 0.5
+logarithm: freq = math.log(average_weight)
+oscillation: freq = math.sin(generations) * 500 + 1000
+
+Recursion:
+freq = previous_freq * mutation_factor
+freq = average_weight + random.gauss(0, mutation_amount)
+
+Math as symbol:
+ideal: GOAL = 50000
+# As the rats approach the goal, the pitch falls.
+distance_from_goal = GOAL - average_weight
+freq = distance_from_goal / 50
+# When goal is exceeded:
+if average_weight > GOAL:
+    freq = freq * 3
+SCREAM
