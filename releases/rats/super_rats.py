@@ -1,6 +1,9 @@
 import time
 import random
 import statistics
+import numpy as np
+
+from scipy.io import wavfile
 
 random.seed(2012)
 
@@ -78,6 +81,8 @@ def main():
     print("number to retain = {}".format(NUM_RATS))
 
     ave_wt = []
+    fitness_history = []
+    audio_segments = []
 
     while popl_fitness < 1 and generations < GENERATION_LIMIT:
         selected_males, selected_females = select(parents, NUM_RATS)
@@ -86,13 +91,49 @@ def main():
         parents = selected_males + selected_females + children
         popl_fitness = fitness(parents, GOAL)
         print("Generation {} fitness = {:.4f}".format(generations, popl_fitness))
+
+        fitness_history.append(popl_fitness)
+
         time.sleep(1.3)
         
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
+    
     print("average weight per generation = {}".format(ave_wt))
     print("\nnumber of generations = {}".format(generations))
     print("number of years = {}" .format(int(generations / LITTERS_PER_YEAR)))
+
+    # test line for proper index function
+    # print(fitness_history)
+
+    # --- AUDIO GENERATION SETTINGS ---
+    sample_rate = 44100  # Standard audio quality
+    duration = 1.3       # How long each gen's tone lasts
+
+    # Step 1: Generate a unique tone math array for each generation's score
+    for score in fitness_history:
+        freq = 100 + (score * 1000)
+
+        # Build the timeline for this specific beep
+        t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+
+        # Calculate the wave data for this frequency
+        tone = np.sin(2 * np.pi * freq * t)
+
+        audio_segments.append(tone)
+
+    # Step 2: Combine all generation tones into a single track and save
+    if audio_segments:
+        
+        # Glue all the separate array chunks into one continuous timeline
+        full_track = np.concatenate(audio_segments)
+        
+        # Convert data to 16-bit integers so media players can read it
+        full_track_scaled = np.int16(full_track * 32767)
+
+        # Save the continuous timeline as your WAV file
+        wavfile.write("releases/rats/audio/rats.wav", sample_rate, full_track_scaled)
+        print("\nAudio file successfully saved to releases/rats/audio/rats.wav")
 
 if __name__ == '__main__':
    start_time = time.time()
