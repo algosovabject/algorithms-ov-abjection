@@ -111,18 +111,47 @@ def main():
     duration = 1.3       # How long each gen's tone lasts
 
     # Step 1: Generate a unique tone math array for each generation's score
-    for score in fitness_history:
+    for score, current_gen_ave_wt in zip(fitness_history, ave_wt):
         freq = 100 + (score * 1000)
 
-        # Build the timeline for this specific beep
-        t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+        # 1. Build the timeline for this specific beep
+        # t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
 
         # Calculate the wave data for this frequency
-        tone = np.sin(2 * np.pi * freq * t)
+        # tone = np.sin(2 * np.pi * freq * t)
 
+        # 1. Falling pitch
+        distance_from_goal = GOAL - current_gen_ave_wt
+        
+        if current_gen_ave_wt > GOAL:
+            freq = (distance_from_goal / 50) * 3  # The SCREAM
+        else:
+            freq = distance_from_goal / 50
+
+        # Prevent frequency from hitting 0 or negative numbers
+        freq = max(20, freq)
+        
+        # 2. Generate the clean tone
+        t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
+        tone = np.sin(2 * np.pi * freq * t)
+        
+        # 3. SONIC MUTATION: Set up chaos variables
+        mutation_amount = MUTATE_MAX
+        max_possible_mutation = 8.0
+
+        # Calculate distortion
+        distortion_factor = min(1.0, max(0.0, mutation_amount / max_possible_mutation))
+
+        # Generate raw static/noise matching the length of the tone
+        static = np.random.uniform(-1.0, 1.0, len(t))
+
+        # Blend the clean tone with the static based on the distortion factor
+        # High mutation = heavy, scratchy, bit-crushed noise
+        tone = ((1 - distortion_factor) * tone) + (distortion_factor * static)
+        
         audio_segments.append(tone)
 
-    # Step 2: Combine all generation tones into a single track and save
+    # Step : Combine all generation tones into a single track and save
     if audio_segments:
         
         # Glue all the separate array chunks into one continuous timeline
