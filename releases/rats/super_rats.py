@@ -94,7 +94,7 @@ def main():
 
         fitness_history.append(popl_fitness)
 
-        time.sleep(1.3)
+        time.sleep(0.3)
         
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
@@ -108,46 +108,71 @@ def main():
 
     # --- AUDIO GENERATION SETTINGS ---
     sample_rate = 44100  # Standard audio quality
-    duration = 1.3       # How long each gen's tone lasts
+    duration = 0.3       # How long each gen's tone lasts
 
     # Step 1: Generate a unique tone math array for each generation's score
     for score, current_gen_ave_wt in zip(fitness_history, ave_wt):
         freq = 100 + (score * 1000)
-
-        # 1. Build the timeline for this specific beep
-        # t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
-
-        # Calculate the wave data for this frequency
-        # tone = np.sin(2 * np.pi * freq * t)
-
-        # 1. Falling pitch
-        distance_from_goal = GOAL - current_gen_ave_wt
         
-        if current_gen_ave_wt > GOAL:
-            freq = (distance_from_goal / 50) * 3  # The SCREAM
-        else:
-            freq = distance_from_goal / 50
-
-        # Prevent frequency from hitting 0 or negative numbers
-        freq = max(20, freq)
-        
-        # 2. Generate the clean tone
+        # This defines the timeline, leave in
         t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
-        tone = np.sin(2 * np.pi * freq * t)
         
-        # 3. SONIC MUTATION: Set up chaos variables
-        mutation_amount = MUTATE_MAX
-        max_possible_mutation = 8.0
+        # Perverting the sine waves
+        error = abs(current_gen_ave_wt - GOAL)
+        instability = error / GOAL
 
-        # Calculate distortion
-        distortion_factor = min(1.0, max(0.0, mutation_amount / max_possible_mutation))
+        drift_std = 0.2 + instability * 6
+        
+        # Random mutation
+        drift = np.random.normal(
+            0, 
+            drift_std,
+            len(t)
+        )
 
-        # Generate raw static/noise matching the length of the tone
-        static = np.random.uniform(-1.0, 1.0, len(t))
+        # Systemic instability
+        if current_gen_ave_wt > GOAL:
 
-        # Blend the clean tone with the static based on the distortion factor
-        # High mutation = heavy, scratchy, bit-crushed noise
-        tone = ((1 - distortion_factor) * tone) + (distortion_factor * static)
+            excess = max(0, current_gen_ave_wt - GOAL)
+
+            convulsion = excess / GOAL
+
+            drift += np.sin(
+                np.linspace(0,30,len(t))
+            ) * convulsion * 20
+
+        instantaneous_freq = freq + drift
+
+        saturation = 1 + instability * 8
+
+        phase = np.cumsum(
+        instantaneous_freq / sample_rate
+        )
+
+        # Memory corruption
+        if current_gen_ave_wt > GOAL:
+            phase += np.random.normal(
+                0,
+                convulsion * 0.03,
+                len(phase)
+            )
+
+        # Seizure
+        #if current_gen_ave_wt > GOAL:
+        #    glitches = np.random.rand(len(phase)) < 0.005
+
+        #    phase[glitches] += np.random.uniform(
+        #        -3,
+        #        3,
+        #        glitches.sum()
+        #    )
+
+        # base = np.sin(2*np.pi*phase/sample_rate)
+
+        tone = np.tanh(
+            np.sin(2*np.pi*phase)
+            * saturation
+        )
         
         audio_segments.append(tone)
 
