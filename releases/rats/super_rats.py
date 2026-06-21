@@ -94,7 +94,7 @@ def main():
 
         fitness_history.append(popl_fitness)
 
-        time.sleep(0.3)
+        time.sleep(0.65)
         
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
@@ -108,7 +108,7 @@ def main():
 
     # --- AUDIO GENERATION SETTINGS ---
     sample_rate = 44100  # Standard audio quality
-    duration = 0.3       # How long each gen's tone lasts
+    duration = 0.65       # How long each gen's tone lasts
 
     # Step 1: Generate a unique tone math array for each generation's score
     for score, current_gen_ave_wt in zip(fitness_history, ave_wt):
@@ -118,8 +118,12 @@ def main():
         t = np.linspace(0, duration, int(sample_rate * duration), endpoint=False)
         
         # Perverting the sine waves
-        error = abs(current_gen_ave_wt - GOAL)
-        instability = error / GOAL
+        # error = abs(current_gen_ave_wt - GOAL)
+        progress = current_gen_ave_wt / GOAL
+
+        progress = min(progress, 1.0)
+
+        instability = progress
 
         drift_std = 0.2 + instability * 6
         
@@ -133,9 +137,9 @@ def main():
         # Systemic instability
         if current_gen_ave_wt > GOAL:
 
-            excess = max(0, current_gen_ave_wt - GOAL)
+            transgression = max(0, current_gen_ave_wt - GOAL)
 
-            convulsion = excess / GOAL
+            convulsion = transgression / GOAL
 
             drift += np.sin(
                 np.linspace(0,30,len(t))
@@ -150,29 +154,26 @@ def main():
         )
 
         # Memory corruption
-        if current_gen_ave_wt > GOAL:
-            phase += np.random.normal(
-                0,
-                convulsion * 0.03,
-                len(phase)
-            )
+        # if current_gen_ave_wt > GOAL:
+        #   phase += np.random.normal(
+        #       0,
+        #       convulsion * 0.03,
+        #       len(phase)
+        #   )
 
         # Seizure
-        #if current_gen_ave_wt > GOAL:
-        #    glitches = np.random.rand(len(phase)) < 0.005
+        if current_gen_ave_wt > GOAL:
+           glitches = np.random.rand(len(phase)) < 0.005
 
-        #    phase[glitches] += np.random.uniform(
-        #        -3,
-        #        3,
-        #        glitches.sum()
-        #    )
+           phase[glitches] += np.random.uniform(
+               -3,
+               3,
+               glitches.sum()
+           )
 
-        # base = np.sin(2*np.pi*phase/sample_rate)
+        base = np.sin(2*np.pi*phase)
 
-        tone = np.tanh(
-            np.sin(2*np.pi*phase)
-            * saturation
-        )
+        tone = np.tanh(base * saturation)
         
         audio_segments.append(tone)
 
