@@ -94,7 +94,7 @@ def main():
 
         fitness_history.append(popl_fitness)
 
-        time.sleep(0.65)
+        time.sleep(1.3)
         
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
@@ -108,7 +108,7 @@ def main():
 
     # --- AUDIO GENERATION SETTINGS ---
     sample_rate = 44100  # Standard audio quality
-    duration = 0.65       # How long each gen's tone lasts
+    duration = 1.3       # How long each gen's tone lasts
 
     # Step 1: Generate a unique tone math array for each generation's score
     for score, current_gen_ave_wt in zip(fitness_history, ave_wt):
