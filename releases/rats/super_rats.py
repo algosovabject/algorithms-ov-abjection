@@ -218,7 +218,7 @@ def make_visuals(fitness_history):
 
         screen.fill((0,0,0))
 
-        radius = init(30 + value * 220)
+        radius = int(30 + value * 220)
 
         instability = value
 
@@ -249,7 +249,7 @@ def make_visuals(fitness_history):
             screen,
             (brightness,brightness,brightness),
             points,
-            widht=3
+            width=3
         )
 
         pygame.image.save(
