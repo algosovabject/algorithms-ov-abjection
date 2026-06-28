@@ -201,6 +201,8 @@ def make_visuals(fitness_history):
 
     WIDTH = 1280
     HEIGHT = 720
+    FPS = 30
+    SECONDS_PER_GENERATION = 1.3
 
     screen = pygame.Surface((WIDTH, HEIGHT))
 
@@ -213,49 +215,88 @@ def make_visuals(fitness_history):
     ) / (
         values.max() - values.min()
     )
-    
-    for frame, value in enumerate(values):
 
-        screen.fill((0,0,0))
+    deformation = np.zeros(220)
 
-        radius = int(30 + value * 220)
+    frames_per_generation = int(FPS * SECONDS_PER_GENERATION)
+    frame_number = 0
 
+    for value in values:
+        
         instability = value
 
-        points = []
-
-        for angle in np.linspace(
+        # organism remembers this generation
+        deformation += np.random.normal(
             0,
-            2*np.pi,
-            220,
-            endpoint=False
-        ):
-            
-            wobble = np.random.normal(
-                0,
-                instability * 40
+            instability * 3,
+            220
+        )
+
+        # if value >= 1.0:
+        if current_gen_ave_wt > GOAL:
+            deformation *= 1.15
+
+        for local_frame in range(frames_per_generation):
+
+            screen.fill((0,0,0))
+
+            # radius = int(30 + value * 220)
+            base_radius = 30 + value * 220
+
+            phase = local_frame / frames_per_generation
+            # radius = base_radius + np.sin(phase * 2*np.pi) * 8
+
+            breath = np.sin(phase * 2*np.pi)
+
+            radius = int(
+                base_radius +
+                breath * 6
             )
 
-            r = radius + wobble
-            
-            x = WIDTH//2 + np.cos(angle) * r
-            y = HEIGHT//2 + np.sin(angle) * r
+            points = []
 
-            points.append((x,y))
+            angles = np.linspace(
+                0,
+                2*np.pi,
+                220,
+                endpoint=False
+            )
 
-        brightness = int(255 * (1-value))
+            frame_wobble = np.random.normal(
+                    0,
+                    instability,
+                    220
+                )
+                
+            for point, angle in enumerate(angles):
+                
+                #wobble = np.random.normal(
+                #    0,
+                #    instability * 40
+                #)
 
-        pygame.draw.polygon(
-            screen,
-            (brightness,brightness,brightness),
-            points,
-            width=3
-        )
+                r = radius + deformation[point] + frame_wobble[point]
+                
+                x = WIDTH//2 + np.cos(angle) * r
+                y = HEIGHT//2 + np.sin(angle) * r
 
-        pygame.image.save(
-            screen,
-            f"frames/frame_{frame:06d}.png"
-        )
+                points.append((x,y))
+
+            brightness = int(255 * (1-value))
+
+            pygame.draw.polygon(
+                screen,
+                (brightness,brightness,brightness),
+                points,
+                width=3
+            )
+
+            pygame.image.save(
+                screen,
+                f"frames/frame_{frame_number:06d}.png"
+            )
+
+            frame_number += 1
 
     pygame.quit()
 
