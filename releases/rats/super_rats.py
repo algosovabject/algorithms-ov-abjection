@@ -2,6 +2,9 @@ import time
 import random
 import statistics
 import numpy as np
+import subprocess
+import pygame
+import os
 
 from scipy.io import wavfile
 
@@ -120,11 +123,8 @@ def main():
         # Perverting the sine waves
         # error = abs(current_gen_ave_wt - GOAL)
         progress = current_gen_ave_wt / GOAL
-
         progress = min(progress, 1.0)
-
         instability = progress
-
         drift_std = 0.2 + instability * 6
         
         # Random mutation
@@ -138,7 +138,6 @@ def main():
         if current_gen_ave_wt > GOAL:
 
             transgression = max(0, current_gen_ave_wt - GOAL)
-
             convulsion = transgression / GOAL
 
             drift += np.sin(
@@ -146,7 +145,6 @@ def main():
             ) * convulsion * 20
 
         instantaneous_freq = freq + drift
-
         saturation = 1 + instability * 8
 
         phase = np.cumsum(
@@ -172,9 +170,7 @@ def main():
            )
 
         base = np.sin(2*np.pi*phase)
-
         tone = np.tanh(base * saturation)
-        
         audio_segments.append(tone)
 
     # Step : Combine all generation tones into a single track and save
@@ -187,8 +183,94 @@ def main():
         full_track_scaled = np.int16(full_track * 32767)
 
         # Save the continuous timeline as your WAV file
-        wavfile.write("releases/rats/audio/rats.wav", sample_rate, full_track_scaled)
-        print("\nAudio file successfully saved to releases/rats/audio/rats.wav")
+        wavfile.write(
+            "releases/rats/audio/rats.wav",
+            sample_rate,
+            full_track_scaled
+        )
+        
+        print("\nTomb for 500,000 mutant rats.")
+    
+    make_visuals(fitness_history)
+    make_video()
+
+# --- VISUAL GENERATION SETTINGS ---
+def make_visuals(fitness_history):
+
+    pygame.init()
+
+    WIDTH = 1280
+    HEIGHT = 720
+
+    screen = pygame.Surface((WIDTH, HEIGHT))
+
+    os.madedirs("frames", exist_ok=True)
+
+    values = np.array(fitness_history)
+
+    values = (
+        values - values.min()
+    ) / (
+        values.max() - values.min()
+    )
+    
+    for frame, value in enumerate(values):
+
+        screen.fill((0,0,0))
+
+        radius = init(30 + value * 220)
+
+        instability = value
+
+        points = []
+
+        for angle in np.linspace(
+            0,
+            2*np.pi,
+            220,
+            endpoint=False
+        ):
+            
+            wobble = np.random.normal(
+                0,
+                instability * 40
+            )
+
+            r = radius + wobble
+            
+            x = WIDTH//2 + np.cos(angle) * r
+            v = HEIGHT//2 + np.sin(angle) * r
+
+            points.append((x,y))
+
+        brightness = int(255 * (1-value))
+
+        pygame.draw.polygon(
+            screen,
+            (brightness,brightness,brightness),
+            points,
+            widht=3
+        )
+
+        pygame.image.save(
+            screen,
+            f"frames/frame_{frame:06d}.png"
+        )
+
+    pygame.quit()
+
+# --- AUDIO/VISUAL OUTPUT ---
+def make_video():
+
+    subprocess.run([
+    "ffmpeg",
+    "-framerate","30",
+    "-i","frames/frame_%06d.png",
+    "-i","releases/rats/audio/rats.wav",
+    "-c:v","libx264",
+    "-pix_fmt","yuv420p",
+    "releases/rats/video/rats.mp4"
+    ])
 
 if __name__ == '__main__':
    start_time = time.time()
