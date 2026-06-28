@@ -204,7 +204,7 @@ def make_visuals(fitness_history):
 
     screen = pygame.Surface((WIDTH, HEIGHT))
 
-    os.madedirs("frames", exist_ok=True)
+    os.makedirs("frames", exist_ok=True)
 
     values = np.array(fitness_history)
 
