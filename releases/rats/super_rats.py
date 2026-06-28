@@ -239,7 +239,7 @@ def make_visuals(fitness_history):
             r = radius + wobble
             
             x = WIDTH//2 + np.cos(angle) * r
-            v = HEIGHT//2 + np.sin(angle) * r
+            y = HEIGHT//2 + np.sin(angle) * r
 
             points.append((x,y))
 
