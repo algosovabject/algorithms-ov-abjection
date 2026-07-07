@@ -97,7 +97,7 @@ def main():
 
         fitness_history.append(popl_fitness)
 
-        time.sleep(1.3)
+        # time.sleep(1.3)
         
         ave_wt.append(int(statistics.mean(parents)))
         generations += 1
@@ -221,6 +221,8 @@ def make_visuals(fitness_history):
     frames_per_generation = int(FPS * SECONDS_PER_GENERATION)
     frame_number = 0
 
+    # print(frames_per_generation)
+
     for value in values:
         
         instability = value
@@ -232,8 +234,8 @@ def make_visuals(fitness_history):
             220
         )
 
-        # if value >= 1.0:
-        if current_gen_ave_wt > GOAL:
+        if value >= 1.0:
+        # if current_gen_ave_wt > GOAL:
             deformation *= 1.15
 
         for local_frame in range(frames_per_generation):
@@ -298,7 +300,11 @@ def make_visuals(fitness_history):
 
             frame_number += 1
 
+            # print(local_frame)
+
     pygame.quit()
+
+    # print(frame_number)
 
 # --- AUDIO/VISUAL OUTPUT ---
 def make_video():
@@ -319,3 +325,4 @@ if __name__ == '__main__':
    end_time = time.time()
    duration = end_time - start_time
 #    print("\nRuntime for this program was {} seconds.".format(duration))
+# print(frame_number)
