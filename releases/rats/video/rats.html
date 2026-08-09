@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rat Proliferation Simulator</title>
+</head>
+<body>
+
+<h1>Rat Proliferation Simulator</h1>
+<p></p>SUPER_RATS.PY is a project designed to simulate the evolution of rats through a genetic algorithm. The goal is to evolve generations of rats to reach an ideal weight of 50000 grams, which is considered optimal for human entertainment purposes.
+</p>
+
+<img src="https://web.archive.org/web/20091026002750im_/http://geocities.com/theatheistking2/bloodlin.gif" alt="Blood">
+
+<h2>Simulation</h2>
+
+<ul>
+  <li>Generations of rats are forced to evolve through natural selection.</li>
+  <li>Breeding pairs are selected based on their fitness in the environment.</li>
+  <li>The unfit individuals are culled from the population.</li>
+  <li>The process is repeated over multiple generations until ideal weight is achieved.</li>
+  <li>A bifurcated audio/visual signal is generated to indicate the evolution of the rat population.</li>
+  <li>A bifurcated audio/visual signal is generated to indicate the mental state of the rat population.</li>
+</ul>
+
+<!-- Mini Video Player Window -->
+<div id="video-window">
+  <div id="video-header">SUPER_RATS.PY</div>
+  <!-- Change "your-video-name.mp4" to the exact name of your MP4 file -->
+  <video id="my-video" controls>
+    <source src="rats.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+
+<h2>Generation</h2>
+
+<ul>
+  <li>50000 grams is the ideal weight for rats in this simulation.</li>
+  <li>Rats that reach this weight are considered to have achieved optimal health and fitness.</li>
+  <li>50000 grams is the average weight of a medium-sized dog.</li>
+  <li>Rats are not naturally meant to weigh 50000 grams.</li>
+  <li>Rats that reach this weight are considered to be in peak condition.</li>
+</ul>
+
+<h2>Exploitation</h2>
+
+<ul>
+  <li>Rats are living beings with their own natural biology and should not be subjected to human-imposed ideals of perfection.</li>
+  <li>Exploitation of rats for human amusement is unethical and harmful.</li>
+  <li>Imposing anthropocentric ideals of perfection upon other living beings is unethical and harmful.</li>
+  <li>All parents love their children; separating child from parent is unethical and harmful</li>
+</ul>
+
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rat Proliferation Simulator</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #141413;
+      color: #e4ddb7;
+      font-family: sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* This is your live space box */
+    #live-space {
+      width: 100%;
+      height: 500px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #7f0505;
+      border: 4px solid #590d0d;
+      border-radius: 8px;
+      position: relative; /* Essential for containing the rats */
+      overflow: hidden;   /* Keeps the rats inside the box boundaries */
+      cursor: pointer;    /* Visual cue that the box is clickable */
+    }
+
+    /* Template rat (hidden by default) */
+    #rat-template {
+      display: none;
+    }
+
+    /* Styled properties for the cloned rats */
+    .rat-clone {
+      position: absolute;
+      width: 60px;  /* Adjust size of your rat here */
+      height: auto;
+      user-select: none;
+      pointer-events: none; /* Prevents the rat images from blocking clicks */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Click inside the box to proliferate rats!</h1>
+  
+  <!-- The Live Box Container -->
+  <div id="live-space">
+    <!-- Replace the src URL with your actual rat GIF link -->
+    <img id="rat-template" src="https://web.archive.org/web/20091022171626im_/http://www.geocities.com/sharnln/holidays/graphics/halloween/crtr/hlwncrtrani05.gif" alt="Rat">
+  </div>
+
+  <script>
+    const liveSpace = document.getElementById('live-space');
+    const ratTemplate = document.getElementById('rat-template');
+    
+    // Array to store data for all active rats
+    const rats = [];
+
+    // Click event listener to spawn a rat anywhere inside the box
+    liveSpace.addEventListener('click', (event) => {
+      // Get the bounding box of the live space to calculate relative click coordinates
+      const rect = liveSpace.getBoundingClientRect();
+      
+      // Calculate exact click coordinates relative to the box container
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+
+      // Clone the template rat
+      const newRat = ratTemplate.cloneNode(true);
+      newRat.id = ''; // Remove the template ID
+      newRat.classList.add('rat-clone');
+      
+      // Append the clone to the container so it renders on screen
+      liveSpace.appendChild(newRat);
+
+      // Give the rat random starting velocities (speeds) between -4 and 4
+      // We ensure they don't get a velocity of exactly 0 so they always move
+      let vx = (Math.random() - 0.5) * 8;
+      let vy = (Math.random() - 0.5) * 8;
+      if (Math.abs(vx) < 1) vx = 3; 
+      if (Math.abs(vy) < 1) vy = 3;
+
+      // Track the rat's physical properties
+      const ratData = {
+        element: newRat,
+        x: clickX - 30, // Center the rat image on the mouse pointer (half of 60px width)
+        y: clickY - 30,
+        vx: vx,
+        vy: vy,
+        width: 60,      // Must match the CSS width
+        height: 60      // Approximate height matching the CSS aspect ratio
+      };
+
+      rats.push(ratData);
+    });
+
+    // The Physics Engine Loop
+    function updatePhysics() {
+      // Get container boundaries dynamically in case the window resizes
+      const boxWidth = liveSpace.clientWidth;
+      const boxHeight = liveSpace.clientHeight;
+
+      rats.forEach((rat) => {
+        // Move the rat by adding velocity to its current coordinates
+        rat.x += rat.vx;
+        rat.y += rat.vy;
+
+        // Bounce off left or right walls
+        if (rat.x <= 0) {
+          rat.x = 0;
+          rat.vx *= -1; // Reverse horizontal direction
+        } else if (rat.x + rat.width >= boxWidth) {
+          rat.x = boxWidth - rat.width;
+          rat.vx *= -1;
+        }
+
+        // Bounce off top or bottom walls
+        if (rat.y <= 0) {
+          rat.y = 0;
+          rat.vy *= -1; // Reverse vertical direction
+        } else if (rat.y + rat.height >= boxHeight) {
+          rat.y = boxHeight - rat.height;
+          rat.vy *= -1;
+        }
+
+        // Apply updated coordinates directly to the HTML element styles
+        rat.element.style.left = `${rat.x}px`;
+        rat.element.style.top = `${rat.y}px`;
+      });
+
+      // Continuously call the loop on every screen refresh frame
+      requestAnimationFrame(updatePhysics);
+    }
+
+    // Start the physics animation loop immediately
+    requestAnimationFrame(updatePhysics);
+  </script>
+</body>
+</html>
