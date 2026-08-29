@@ -1,11 +1,42 @@
 nodes:
-  - id: "life"
+  - id: "blood"
     label: "The Spark of Life"
     meaning: "Birth, beginnings, potential"
     tags: ["origin", "creation", "essence"]
-    imagery: "A glimmer in darkness; the first breath"
-    associations:
-      tarot: "The Fool"
-      alchemy: "Air"
-      letter: "Aleph"
-      path: "11 - Keter to Chokmah"
+    audio:
+    visual:
+
+  - id: "machine"
+    label: "The Spark of Life"
+    meaning: "Birth, beginnings, potential"
+    tags: ["origin", "creation", "essence"]
+    audio:
+    visual:
+
+  - id: "hunger"
+    label: "The Spark of Life"
+    meaning: "Birth, beginnings, potential"
+    tags: ["origin", "creation", "essence"]
+    audio:
+    visual: 
+
+  - id: "water"
+    label: "The Spark of Life"
+    meaning: "Birth, beginnings, potential"
+    tags: ["origin", "creation", "essence"]
+    audio:
+    visual: 
+
+  - id: "fear"
+    label: "The Spark of Life"
+    meaning: "Birth, beginnings, potential"
+    tags: ["origin", "creation", "essence"]
+    audio:
+    visual: 
+
+  - id: "memory"
+    label: "The Spark of Life"
+    meaning: "Birth, beginnings, potential"
+    tags: ["origin", "creation", "essence"]
+    audio:
+    visual: 
