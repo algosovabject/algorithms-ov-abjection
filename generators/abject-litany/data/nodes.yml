@@ -1,0 +1,11 @@
+nodes:
+  - id: "life"
+    label: "The Spark of Life"
+    meaning: "Birth, beginnings, potential"
+    tags: ["origin", "creation", "essence"]
+    imagery: "A glimmer in darkness; the first breath"
+    associations:
+      tarot: "The Fool"
+      alchemy: "Air"
+      letter: "Aleph"
+      path: "11 - Keter to Chokmah"
