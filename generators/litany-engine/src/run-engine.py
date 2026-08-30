@@ -2,18 +2,39 @@ from oracle import load_oracle_graph, weighted_pseudopod_walk
 from input_parser import load_input_map, parse_input
 from memory import log_query
 from responses import get_flavor_line
-from mood_engine import get_oracle_mood
-from responses import get_flavor_line, get_season_flavor
 import random
 
-mood = get_oracle_mood()
-print(f"[Mood: {mood['vibe']}]")
-print(get_flavor_line(mood["usage"]))
-print(get_season_flavor(mood["season"]))
+def main():
 
-# Pick a random mood aspect to flavor the oracle's behavior
-mood_choice = random.choice(['time', 'moon', 'usage', 'season'])
-mood_key = mood.get(mood_choice, "")
+    G = load_litany_graph(...)
+    input_map = load_input_map(...)
+
+    while True:
+
+        command = get_user_input()
+
+        if command == "KILL":
+            break
+
+        if command == "FEED":
+            query = get_query()
+
+            start_node = parse_input(
+                query,
+                input_map
+            )
+
+            path = invoke_litany(
+                G,
+                start_node
+            )
+
+            log_invocation(
+                query,
+                path
+            )
+
+            render_path(path)
 
 # Get a flavor line for the chosen mood
 flavor_line = get_flavor_line(mood_key)

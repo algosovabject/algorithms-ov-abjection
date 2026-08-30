@@ -31,7 +31,7 @@ def load_oracle_graph(nodes_path, edges_path):
 
     return G
 
-def weighted_pseudopod_walk(G, start='life', steps=4, tag_bias=True):
+def invoke_litany (G, start='life', steps=4, tag_bias=True):
     path = [start]
     current = start
     visited = set([start])
@@ -64,7 +64,7 @@ def weighted_pseudopod_walk(G, start='life', steps=4, tag_bias=True):
 
     return path
 
-def log_behavior(entry, path="data/ooze_behavior.log"):
+def log_behavior(entry, path="data/machine-litanies.log"):
     with open(path, "a") as f:
         timestamp = datetime.datetime.now().isoformat()
         f.write(f"{timestamp} - {entry}\n")
