@@ -1,14 +1,11 @@
 import yaml
 import networkx as nx
-import random
-import math
-import datetime
 
 def load_yaml(path):
     with open(path, 'r') as f:
         return yaml.safe_load(f)
 
-def load_oracle_graph(nodes_path, edges_path):
+def load_litany_graph(nodes_path, edges_path):
     node_data = load_yaml(nodes_path)
     edge_data = load_yaml(edges_path)
 
@@ -17,9 +14,12 @@ def load_oracle_graph(nodes_path, edges_path):
     for node in node_data['nodes']:
         G.add_node(
             node['id'],
-            label=node.get('label', ''),
-            meaning=node.get('meaning', ''),
-            tags=node.get('tags', [])
+            label=node.get("label", ""),
+            meaning=node.get("meaning", ""),
+            tags=node.get("tags", []),
+            keywords=node.get("keywords", []),
+            audio=node.get("audio"),
+            visual=node.get("visual")
         )
 
     for edge in edge_data['edges']:

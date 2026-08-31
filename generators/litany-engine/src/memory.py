@@ -3,7 +3,7 @@
 import json
 from datetime import datetime
 
-LOG_PATH = "data/oracle_log.jsonl"
+LOG_PATH = "data/epitaphs.jsonl"
 
 def log_query(question, path, matched_tags):
     entry = {

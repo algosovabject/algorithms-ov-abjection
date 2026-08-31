@@ -1,82 +1,88 @@
-from oracle import load_oracle_graph, weighted_pseudopod_walk
-from input_parser import load_input_map, parse_input
+from litany import load_litany_graph
+from input_parser import parse_input
 from memory import log_query
-from responses import get_flavor_line
-import random
+
+NODES_PATH = "data/nodes.yml"
+EDGES_PATH = "data/edges.yml"
 
 def main():
 
-    G = load_litany_graph(...)
-    input_map = load_input_map(...)
+    G = load_litany_graph(
+        NODES_PATH,
+        EDGES_PATH
+    )
+
+    session = {
+        "inputs": [],
+        "path": [],
+        "active_nodes": [],
+        "status": "idle"
+    }
+
+    print("LITANY ENGINE")
+    print("READY.")
 
     while True:
 
-        command = get_user_input()
+        command = input(
+            "\nCOMMAND [FEED / MUTATE / INTERRUPT / KILL]:"
+        ).strip().upper()
 
         if command == "KILL":
+            print("THROATS SLASHED.")
             break
 
-        if command == "FEED":
-            query = get_query()
+        elif command == "FEED":
 
-            start_node = parse_input(
+            if session["status"] != "idle":
+                print("LITANY ALREADY ACTIVE.")
+                continue
+
+            query = input("FEED >")
+
+            session["inputs"].append(query)
+            session["status"] = "active"
+
+            matches = parse_input(
                 query,
-                input_map
+                G
             )
 
-            path = invoke_litany(
-                G,
-                start_node
+            session["active_nodes"] = matches
+
+            print("SIGNAL RECEIVED.")
+            print(f"ACTIVE STATES: {matches}")
+
+        elif command == "MUTATE":
+
+            if session["status"] != "active":
+                print("NO ACTIVE LITANY.")
+                continue
+
+            mutation = input("MUTATE > ")
+
+            session["inputs"].append(mutation)
+
+            full_input = "\n".join(session["inputs"])
+
+            matches = parse_input(
+                full_input,
+                G
             )
 
-            log_invocation(
-                query,
-                path
-            )
+            session["active_nodes"] = matches
+        
+            print("INPUT MUTATED.")
+            print(f"ACTIVE STATES: {matches}")
 
-            render_path(path)
+        elif command == "INTERRUPT":
 
-# Get a flavor line for the chosen mood
-flavor_line = get_flavor_line(mood_key)
-print(flavor_line)
+            session["status"] = "interrupted"
+            
+            print("SIGNAL INTERRUPTED.")
+
+        else:
+            print("UNKNOWN COMMAND.")
 
 if __name__ == "__main__":
-    mood = get_oracle_mood()
-    print(f"[Mood: {mood['vibe']}]")
-
-    if mood["usage"] == "repetitive":
-        print("*blorp* The ooze makes a rude noise. You've asked this too many times.")
-    elif mood["usage"] == "varied":
-        print("The ooze wiggles excitedly. It likes your curiosity.")
-
-    user_input = input("Ask the Ooze Oracle your question (or type 'mood'): ")
-
-    if user_input.lower().strip() == "mood":
-        print(f"The ooze is currently feeling: {mood['vibe']}")
-        exit()
-
-    G = load_oracle_graph("data/oracle_nodes.yaml", "data/oracle_edges.yaml")
-    input_map = load_input_map("data/input_map.yaml")
-    user_input = input("Ask the Ooze Oracle your question: ")
-    start_node = parse_input(user_input, input_map)
-
-    if start_node is None:
-        responses = [
-        "The ooze gurgles uncertainly... it does not understand.",
-        "The slime sloshes side to side, uncomprehending.",
-        "A ripple passes through the slime... but it says nothing.",
-        "The ooze bubbles then deflates. You are ignored."
-        ]
-        print(random.choice(responses))
-    else:
-        path = weighted_pseudopod_walk(G, start=start_node)
-        matched_tags = G.nodes[start_node]['tags']
-        log_query(question, path, matched_tags)
-        print("The oracle blorps quietly... it remembers this.")
-        
-        print("Your path through the Oracle of Ooze:")
-        for node in path:
-            print(f"> {G.nodes[node]['label']}: {G.nodes[node]['meaning']}")
-
-def get_flavor_line(mood_phrase):
-    return random.choice(MOOD_RESPONSES.get(mood_phrase, ["The ooze oozes in silence."]))
+    main()

@@ -1,5 +1,112 @@
-edges: 
-  - source: "life"
-    target: "altar"
+edges:
+
+  # BLOOD
+  - source: "blood"
+    target: "hunger"
     weight: 1
-    description: "The divine breath fills the lungs and exhales as the word"
+
+  - source: "blood"
+    target: "memory"
+    weight: 1
+
+  - source: "blood"
+    target: "fear"
+    weight: 0.8
+
+  - source: "blood"
+    target: "machine"
+    weight: 0.9
+
+  - source: "blood"
+    target: "water"
+    weight: 1.2
+
+
+  # MACHINE
+  - source: "machine"
+    target: "memory"
+    weight: 1.3
+
+  - source: "machine"
+    target: "hunger"
+    weight: 1
+
+  - source: "machine"
+    target: "blood"
+    weight: 0.8
+
+  - source: "machine"
+    target: "fear"
+    weight: 0.9
+
+
+  # HUNGER
+  - source: "hunger"
+    target: "blood"
+    weight: 1.2
+
+  - source: "hunger"
+    target: "machine"
+    weight: 1
+
+  - source: "hunger"
+    target: "fear"
+    weight: 1
+
+  - source: "hunger"
+    target: "water"
+    weight: 0.8
+
+
+  # WATER
+  - source: "water"
+    target: "blood"
+    weight: 1.2
+
+  - source: "water"
+    target: "memory"
+    weight: 1.1
+
+  - source: "water"
+    target: "fear"
+    weight: 0.9
+
+  - source: "water"
+    target: "hunger"
+    weight: 0.8
+
+
+  # FEAR
+  - source: "fear"
+    target: "memory"
+    weight: 1.3
+
+  - source: "fear"
+    target: "hunger"
+    weight: 1.1
+
+  - source: "fear"
+    target: "blood"
+    weight: 1
+
+  - source: "fear"
+    target: "machine"
+    weight: 0.9
+
+
+  # MEMORY
+  - source: "memory"
+    target: "machine"
+    weight: 1.3
+
+  - source: "memory"
+    target: "fear"
+    weight: 1.2
+
+  - source: "memory"
+    target: "blood"
+    weight: 1
+
+  - source: "memory"
+    target: "water"
+    weight: 1
