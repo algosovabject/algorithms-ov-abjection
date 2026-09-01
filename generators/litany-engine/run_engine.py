@@ -1,5 +1,6 @@
-from litany import load_litany_graph
-from input_parser import parse_input
+from src.litany import load_litany_graph
+from src.input_parser import parse_input
+from src.pygame_ui import run_ui
 
 NODES_PATH = "data/nodes.yml"
 EDGES_PATH = "data/edges.yml"
@@ -84,4 +85,4 @@ def main():
             print("UNKNOWN COMMAND.")
 
 if __name__ == "__main__":
-    main()
+    run_ui()
