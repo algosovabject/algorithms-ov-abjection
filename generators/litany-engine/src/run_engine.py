@@ -1,6 +1,5 @@
 from litany import load_litany_graph
 from input_parser import parse_input
-from memory import log_query
 
 NODES_PATH = "data/nodes.yml"
 EDGES_PATH = "data/edges.yml"
