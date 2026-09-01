@@ -1,22 +1,18 @@
-# src/memory.py
-
 import json
 from datetime import datetime
 
 LOG_PATH = "data/epitaphs.jsonl"
 
-def log_query(question, path, matched_tags):
+def log_query(inputs, start_states, path):
+
     entry = {
         "timestamp": datetime.now().isoformat(),
-        "input": "I wanted forgiveness but fed the machine instead.",
-        "start_state": "forgiveness",
-        "path": [
-            "forgiveness",
-            "hunger",
-            "machine",
-            "blood"
-        ]
+        "input": inputs,
+        "start_state": start_states,
+        "path": path
     }
 
-    with open(LOG_PATH, 'a') as f:
-        f.write(json.dumps(entry) + "\n")
+    with open(LOG_PATH, "a") as f:
+        f.write(
+            json.dumps(entry) + "\n"
+        )

@@ -1,10 +1,4 @@
-import yaml
-
-def load_input_map(yaml_path):
-    with open(yaml_path, 'r') as f:
-        return yaml.safe_load(f)
-
-def parse_input(user_input, input_map, G):
+def parse_input(user_input, G):
 
     user_input = user_input.lower()
 
@@ -20,4 +14,4 @@ def parse_input(user_input, input_map, G):
                 matches.append(node_id)
                 break
 
-        return matches
+    return matches

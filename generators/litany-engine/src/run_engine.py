@@ -78,7 +78,7 @@ def main():
         elif command == "INTERRUPT":
 
             session["status"] = "interrupted"
-            
+
             print("SIGNAL INTERRUPTED.")
 
         else:
