@@ -40,6 +40,7 @@ EDGES_PATH = ENGINE_DIR / "data" / "edges.yml"
 def run_ui():
 
     pygame.init()
+    pygame.mixer.init()
 
     G = load_litany_graph(
     NODES_PATH,
@@ -87,7 +88,7 @@ def run_ui():
                     user_input = user_input[:-1]
 
                 elif event.key == pygame.K_RETURN:
-                    # Handle command execution here
+
                     if user_input.strip():
 
                         active_states = parse_input(
@@ -96,31 +97,66 @@ def run_ui():
                         )
 
                         if active_states:
+
                             status = "ACTIVE"
-
                             active_state = active_states[0]
-                            visual_path = G.nodes[active_state].get("visual")
 
-                            if visual_path:
-                                visual_path = ENGINE_DIR / visual_path
+                            # Audio signal
+                            
+                            audio_payload = G.nodes[
+                                active_state
+                            ].get("audio")
+
+                            if audio_payload: 
+
+                                audio_path = (
+                                    ENGINE_DIR /
+                                    audio_payload
+                                )
+
+                                pygame.mixer.music.load(
+                                    audio_path
+                                )
+
+                                pygame.mixer.music.play()
+
+                            # Visual signal
+                            
+                            visual_payload = G.nodes[
+                                active_state
+                            ].get("visual")
+
+                            if visual_payload:
+
+                                visual_path = (
+                                    ENGINE_DIR /
+                                    visual_payload
+                                )
+
                                 active_visual = pygame.image.load(
                                     visual_path
                                 ).convert()
 
                                 active_visual = pygame.transform.scale(
                                     active_visual,
-                                    (VIEWPORT_RECT.width, VIEWPORT_RECT.height)
+                                    (
+                                        VIEWPORT_RECT.width,
+                                        VIEWPORT_RECT.height
+                                    )
                                 )
                             else:
                                 active_visual = None
 
                         else:
+
                             status = "NO SIGNAL"
                             active_state = None
                             active_visual = None
 
                         print("SIGNAL RECEIVED.")
-                        print(f"ACTIVE STATES: {active_states}")
+                        print(
+                            f"ACTIVE STATES: {active_states}"
+                        )
 
                         user_input = ""
 
