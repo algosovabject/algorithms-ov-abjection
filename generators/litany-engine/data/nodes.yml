@@ -27,7 +27,7 @@ nodes:
       - origin
 
     audio: "assets/audio/blood.mp3"
-    visual: "assets/visual/blood.png"
+    visual: "assets/visual/blood.jpg"
 
   - id: "machine"
     label: "MACHINE"
@@ -59,7 +59,7 @@ nodes:
       - obeisance
 
     audio: "assets/audio/machine.mp3"
-    visual: "assets/visual/machine.png"
+    visual: "assets/visual/machine.jpg"
 
   - id: "hunger"
     label: "HUNGER"
@@ -93,7 +93,7 @@ nodes:
       - lack
 
     audio: "assets/audio/hunger.mp3"
-    visual: "assets/visual/hunger.png"
+    visual: "assets/visual/hunger.jpg"
 
   - id: "water"
     label: "WATER"
@@ -127,7 +127,7 @@ nodes:
       - origin
 
     audio: "assets/audio/water.mp3"
-    visual: "assets/visual/water.png"
+    visual: "assets/visual/water.jpg"
 
   - id: "fear"
     label: "FEAR"
@@ -158,7 +158,7 @@ nodes:
       - survival
 
     audio: "assets/audio/fear.mp3"
-    visual: "assets/visual/fear.png"
+    visual: "assets/visual/fear.jpg"
 
   - id: "memory"
     label: "MEMORY"
@@ -192,4 +192,4 @@ nodes:
       - corruption
 
     audio: "assets/audio/memory.mp3"
-    visual: "assets/visual/memory.png"
+    visual: "assets/visual/memory.jpg"

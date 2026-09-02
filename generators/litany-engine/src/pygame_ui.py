@@ -102,6 +102,7 @@ def run_ui():
                             visual_path = G.nodes[active_state].get("visual")
 
                             if visual_path:
+                                visual_path = ENGINE_DIR / visual_path
                                 active_visual = pygame.image.load(
                                     visual_path
                                 ).convert()
