@@ -1,5 +1,0 @@
-edges: 
-  - source: "life"
-    target: "altar"
-    weight: 1
-    description: "The divine breath fills the lungs and exhales as the word"

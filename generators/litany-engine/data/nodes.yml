@@ -1,0 +1,195 @@
+nodes:
+  - id: "blood"
+    label: "BLOOD"
+    meaning: >
+      The blood is the life.
+      Cleansing hemmorhage.
+      Sustaining vitality.
+      Menstruation.
+      Violence.
+
+    keywords:
+      - blood
+      - bleed
+      - bleeding
+      - hemorrhage
+      - menstruation
+
+    tags:
+      - life
+      - death
+      - birth
+      - beginning
+      - ending
+      - threshold
+      - cleansing
+      - violence
+      - origin
+
+    audio: "assets/audio/blood.mp3"
+    visual: "assets/visual/blood.jpg"
+
+  - id: "machine"
+    label: "MACHINE"
+    meaning: >
+      Artificial organism.
+      Tool for advancement and regression.
+      Cartesian simulacra.
+      Non-living lifeform.
+      Deus ex machina.
+
+    keywords:
+      - machine
+      - machinery
+      - mechanical
+      - computer
+      - program
+      - algorithm
+      - tool
+
+    tags:
+      - metal
+      - operation
+      - manufacture
+      - process
+      - construction
+      - destruction
+      - artificial
+      - automation
+      - obeisance
+
+    audio: "assets/audio/machine.mp3"
+    visual: "assets/visual/machine.jpg"
+
+  - id: "hunger"
+    label: "HUNGER"
+    meaning: >
+      The need to feed.
+      Bone deep desire.
+      Consume and digest.
+      Endless void.
+
+    keywords:
+      - hunger
+      - hungry
+      - starving
+      - feed
+      - feeding
+      - eat
+      - eating
+      - consume
+      - consumption
+      - desire
+
+    tags:
+      - urge
+      - instinct
+      - appetite
+      - desire
+      - consumption
+      - digestion
+      - void
+      - satiation
+      - lack
+
+    audio: "assets/audio/hunger.mp3"
+    visual: "assets/visual/hunger.jpg"
+
+  - id: "water"
+    label: "WATER"
+    meaning: >
+      The cradle of life.
+      Primordial soup.
+      Life-giving, life-ending.
+      Drowning.
+      Pressurized abyss.
+      Subconscious.
+
+    keywords:
+      - water
+      - drowning
+      - drown
+      - ocean
+      - sea
+      - river
+      - rain
+      - flood
+
+    tags:
+      - life
+      - death
+      - emotion
+      - subconscious
+      - nurture
+      - destruction
+      - pressure
+      - abyss
+      - origin
+
+    audio: "assets/audio/water.mp3"
+    visual: "assets/visual/water.jpg"
+
+  - id: "fear"
+    label: "FEAR"
+    meaning: >
+      The greatest fear is fear of the unknown.
+      The signal.
+      The message.
+      Do not ignore.
+      Life-preserving mental agony.
+
+    keywords:
+      - fear
+      - afraid
+      - frightened
+      - terror
+      - scared
+      - panic
+      - danger
+
+    tags:
+      - resistance
+      - self-preservation
+      - boundary
+      - unknown
+      - signal
+      - warning
+      - blockage
+      - survival
+
+    audio: "assets/audio/fear.mp3"
+    visual: "assets/visual/fear.jpg"
+
+  - id: "memory"
+    label: "MEMORY"
+    meaning: >
+      Tenuous grasp on the past.
+      Corruptible recollections.
+      Rewritable mental space.
+      RAM.
+      Mind.
+      Record of consciousness.
+
+    keywords:
+      - memory
+      - remember
+      - remembered
+      - forget
+      - forgotten
+      - recollection
+      - past
+      - nostalgia
+      - memorial
+
+    tags:
+      - longing
+      - remnants
+      - history
+      - rewritable
+      - programmable
+      - conditioning
+      - consciousness
+      - corruption
+
+    audio: "assets/audio/memory.mp3"
+    visual: "assets/visual/memory.jpg"
