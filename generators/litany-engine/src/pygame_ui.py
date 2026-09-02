@@ -1,4 +1,9 @@
+from pathlib import Path
+
 import pygame
+
+from src.litany import load_litany_graph
+from src.input_parser import parse_input
 
 WINDOW_WIDTH = 900
 WINDOW_HEIGHT = 700
@@ -28,10 +33,19 @@ COMMAND_RECT = pygame.Rect(
     100
 )
 
+ENGINE_DIR = Path(__file__).resolve().parent.parent
+NODES_PATH = ENGINE_DIR / "data" / "nodes.yml"
+EDGES_PATH = ENGINE_DIR / "data" / "edges.yml"
 
 def run_ui():
 
     pygame.init()
+    pygame.mixer.init()
+
+    G = load_litany_graph(
+    NODES_PATH,
+    EDGES_PATH
+    )
 
     screen = pygame.display.set_mode(
         (WINDOW_WIDTH, WINDOW_HEIGHT)
@@ -53,6 +67,12 @@ def run_ui():
         20
     )
 
+    user_input = ""
+    active_states = []
+    status = "IDLE"
+    active_state = None
+    active_visual = None
+
     running = True
 
     while running:
@@ -61,6 +81,87 @@ def run_ui():
 
             if event.type == pygame.QUIT:
                 running = False
+
+            elif event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_BACKSPACE:
+                    user_input = user_input[:-1]
+
+                elif event.key == pygame.K_RETURN:
+
+                    if user_input.strip():
+
+                        active_states = parse_input(
+                            user_input,
+                            G
+                        )
+
+                        if active_states:
+
+                            status = "ACTIVE"
+                            active_state = active_states[0]
+
+                            # Audio signal
+                            
+                            audio_payload = G.nodes[
+                                active_state
+                            ].get("audio")
+
+                            if audio_payload: 
+
+                                audio_path = (
+                                    ENGINE_DIR /
+                                    audio_payload
+                                )
+
+                                pygame.mixer.music.load(
+                                    audio_path
+                                )
+
+                                pygame.mixer.music.play()
+
+                            # Visual signal
+                            
+                            visual_payload = G.nodes[
+                                active_state
+                            ].get("visual")
+
+                            if visual_payload:
+
+                                visual_path = (
+                                    ENGINE_DIR /
+                                    visual_payload
+                                )
+
+                                active_visual = pygame.image.load(
+                                    visual_path
+                                ).convert()
+
+                                active_visual = pygame.transform.scale(
+                                    active_visual,
+                                    (
+                                        VIEWPORT_RECT.width,
+                                        VIEWPORT_RECT.height
+                                    )
+                                )
+                            else:
+                                active_visual = None
+
+                        else:
+
+                            status = "NO SIGNAL"
+                            active_state = None
+                            active_visual = None
+
+                        print("SIGNAL RECEIVED.")
+                        print(
+                            f"ACTIVE STATES: {active_states}"
+                        )
+
+                        user_input = ""
+
+                else:
+                    user_input += event.unicode
 
         screen.fill(BACKGROUND)
 
@@ -78,7 +179,12 @@ def run_ui():
         )
 
         # Viewport
-
+        if active_visual:
+            screen.blit(
+                active_visual,
+                VIEWPORT_RECT.topleft
+            )
+            
         pygame.draw.rect(
             screen,
             BORDER_COLOR,
@@ -96,7 +202,7 @@ def run_ui():
         )
 
         status_text = text_font.render(
-            "STATUS: IDLE",
+            f"STATUS: {status}",
             True,
             TEXT_COLOR
         )
@@ -105,6 +211,22 @@ def run_ui():
             status_text,
             (55, 470)
         )
+
+        if active_states:
+
+            states_text = text_font.render(
+                "ACTIVE STATES: " + " / ".join(
+                    state.upper()
+                    for state in active_states
+                ),
+                True,
+                TEXT_COLOR
+            )
+
+            screen.blit(
+                states_text,
+                (55, 500)
+            )
 
         # Command panel
 
@@ -116,7 +238,7 @@ def run_ui():
         )
 
         command_text = text_font.render(
-            "> _",
+            f"> {user_input}",
             True,
             TEXT_COLOR
         )
