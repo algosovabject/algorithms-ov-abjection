@@ -26,8 +26,8 @@ nodes:
       - violence
       - origin
 
-    audio:
-    visual:
+    audio: "assets/audio/blood.mp3"
+    visual: "assets/visual/blood.png"
 
   - id: "machine"
     label: "MACHINE"
@@ -58,8 +58,8 @@ nodes:
       - automation
       - obeisance
 
-    audio:
-    visual:
+    audio: "assets/audio/machine.mp3"
+    visual: "assets/visual/machine.png"
 
   - id: "hunger"
     label: "HUNGER"
@@ -92,8 +92,8 @@ nodes:
       - satiation
       - lack
 
-    audio:
-    visual: 
+    audio: "assets/audio/hunger.mp3"
+    visual: "assets/visual/hunger.png"
 
   - id: "water"
     label: "WATER"
@@ -126,8 +126,8 @@ nodes:
       - abyss
       - origin
 
-    audio:
-    visual: 
+    audio: "assets/audio/water.mp3"
+    visual: "assets/visual/water.png"
 
   - id: "fear"
     label: "FEAR"
@@ -157,8 +157,8 @@ nodes:
       - blockage
       - survival
 
-    audio:
-    visual: 
+    audio: "assets/audio/fear.mp3"
+    visual: "assets/visual/fear.png"
 
   - id: "memory"
     label: "MEMORY"
@@ -191,5 +191,5 @@ nodes:
       - consciousness
       - corruption
 
-    audio:
-    visual: 
+    audio: "assets/audio/memory.mp3"
+    visual: "assets/visual/memory.png"
